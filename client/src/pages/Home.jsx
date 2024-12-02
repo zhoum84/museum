@@ -20,6 +20,10 @@ const Home = () => {
   const handleArtistClick = () => {
     navigate('/artist')
   }
+
+  const handleExhibitClick = () => {
+    navigate('/exhibits')
+  }
   return (
     <>
       <section className="heading">
@@ -27,7 +31,7 @@ const Home = () => {
       </section>
 
       <button className="btn btn-blue-block" onClick={handleSearchClick}>Search Actions</button>
-      <button className="btn btn-blue-block" onClick={handleClick}>Exhibit Management</button>
+      <button className="btn btn-blue-block" onClick={handleExhibitClick}>Exhibit Management</button>
       <button className="btn btn-blue-block" onClick={handleArtistClick}>Artist and Artwork Management</button>
       <button className="btn btn-blue-block" onClick={handleCuratorClick}>Curator Management</button>
       <button className="btn btn-blue-block" onClick={handleClick}>User Exhibit</button>
