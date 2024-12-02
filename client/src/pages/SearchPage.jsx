@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 export const SearchPage = () => {
-  const [search, setSearch] = useState("artist");
+  const [search, setSearch] = useState("artists");
   const [searchByName, setSearchByName] = useState(true);
   const [query, setQuery] = useState("");
   // Search Functions
@@ -34,33 +34,17 @@ export const SearchPage = () => {
     }
     return id;
   };
-  async function getData() {
-    try {
-      const response = await axios.get("http://localhost:4000/");
-      console.log("Data:", response.data);
-      setRes(response.data);
-    } catch (error) {
-      console.error("Error making GET request:", error);
-    }
-  }
 
   async function makeSearch() {
     try {
-      if (searchByName) {
-        const response = await axios.get("http://localhost:4000/museums", {
-          params: { name: query },
-        });
-        console.log("Data:", response.data);
-        setRes(response.data)
-      }
-      else {
-        const response = await axios.get("http://localhost:4000/museums", {
-          params: { id: query },
-        });
-        console.log("Data:", response.data);
-        setRes(response.data)
-      }
-      
+      console.log(search)
+      const response = await axios.get(`http://localhost:4000/${search}`, {
+        params: { ...searchByName && {name: query}, 
+        ...!searchByName && {id: query} 
+      },
+      });
+      console.log("Data:", response.data);
+      setRes(response.data)
     } catch (error) {
       console.error("Error making GET request:", error);
     }
@@ -73,8 +57,8 @@ export const SearchPage = () => {
         <label>
           <input
             type="radio"
-            value="artist"
-            checked={search === "artist"}
+            value="artists"
+            checked={search === "artists"}
             onClick={(e) => handleClick(e)}
           />{" "}
           Artist
@@ -82,8 +66,8 @@ export const SearchPage = () => {
         <label>
           <input
             type="radio"
-            value="artwork"
-            checked={search === "artwork"}
+            value="artworks"
+            checked={search === "artworks"}
             onClick={(e) => handleClick(e)}
           />{" "}
           Artwork
@@ -91,8 +75,8 @@ export const SearchPage = () => {
         <label>
           <input
             type="radio"
-            value="exhibit"
-            checked={search === "exhibit"}
+            value="exhibits"
+            checked={search === "exhibits"}
             onClick={(e) => handleClick(e)}
           />
           Exhibit
@@ -100,8 +84,8 @@ export const SearchPage = () => {
         <label>
           <input
             type="radio"
-            value="museum"
-            checked={search === "museum"}
+            value="museums"
+            checked={search === "museums"}
             onClick={(e) => handleClick(e)}
           />{" "}
           Museum

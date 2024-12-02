@@ -393,13 +393,14 @@ ORDER BY A.Date_created ASC
 LIMIT 1;
 
 -- 2a - Search_artist
-SELECT M.*, H.start_date, H.end_date
-FROM ARTIST AR, CREATES C, ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M
+SELECT AR.Artist_id, AR.Name AS Artist_Name, M.*, EHA.Eid, H.Gallery_name, E.Name AS Exhibit_name,  H.start_date, H.end_date, A.Art_id, A.Name as Artwork_Name
+FROM ARTIST AR, CREATES C, ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
 WHERE AR.Artist_id = C.Artist_id
 AND C.Art_id = A.Art_id
 AND A.Art_id = EHA.Art_id
 AND EHA.Eid = H.Eid
 AND H.Mid = M.Mid
+AND E.Eid = EHA.Eid
 AND AR.Name='Artist Annie';
 
 -- 2b - Search_artwork
