@@ -13,6 +13,10 @@ const Home = () => {
     navigate('/search');
   }
 
+  const handleCuratorClick = () => {
+    navigate('/curators')
+  }
+
   return (
     <>
       <section className="heading">
@@ -22,7 +26,7 @@ const Home = () => {
       <button className="btn btn-blue-block" onClick={handleSearchClick}>Search Actions</button>
       <button className="btn btn-blue-block" onClick={handleClick}>Exhibit Management</button>
       <button className="btn btn-blue-block" onClick={handleClick}>Artist and Artwork Management</button>
-      <button className="btn btn-blue-block" onClick={handleClick}>Curator Management</button>
+      <button className="btn btn-blue-block" onClick={handleCuratorClick}>Curator Management</button>
       <button className="btn btn-blue-block" onClick={handleClick}>User Exhibit</button>
     <div>
 

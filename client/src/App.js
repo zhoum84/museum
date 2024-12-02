@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import { SearchPage } from "./pages/SearchPage";
+import { CuratorPage } from "./pages/CuratorPage";
+
 function App() {
   return (
     <>
@@ -9,8 +11,9 @@ function App() {
         <div className='container'>
           <Header/>
           <Routes>
-          <Route path='/home' element={<Home/>}/>
+          <Route path='/' element={<Home/>}/>
           <Route path='/search' element={<SearchPage/>}/>
+          <Route path='/curators' element={<CuratorPage/>}/>
           </Routes>
         </div>
       </Router>
