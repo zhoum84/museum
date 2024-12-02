@@ -12,9 +12,15 @@ body {
 
 }
 
-table, th, td {
+/* table, th, td {
+  border:1px solid black;
+} */
+
+
+table{
   border:1px solid black;
 }
+
 
 
 a {
@@ -43,7 +49,7 @@ h3 {
 
 .container {
   width: 100%;
-  max-width: 960px;
+  /* max-width: 960px; */
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
@@ -92,10 +98,16 @@ h3 {
   color: #828282;
 }
 
+.flex-col{
+  display: flex;
+  flex-direction: column;
+}
+
 .form {
   width: 70%;
   margin: 0 auto;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {

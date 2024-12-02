@@ -33,6 +33,33 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/museums", (req, res) => {
+
+  let query = "";
+  if ("id" in req.query){
+    query = `SELECT M.*, C.Name AS ContactName, C.Email, C.Phone_num, H.Day, H.Opening_time, H.Closing_time\
+    FROM MUSEUM M, CONTACT C, HOURS H\
+    WHERE M.Mid = C.Mid\
+    AND M.Mid = H.Mid\
+    AND M.Mid = ${req.query.id};`;
+  } else {
+    query = `SELECT M.*, C.Name AS ContactName, C.Email, C.Phone_num, H.Day, H.Opening_time, H.Closing_time\
+    FROM MUSEUM M, CONTACT C, HOURS H\
+    WHERE M.Mid = C.Mid\
+    AND M.Mid = H.Mid\
+    AND M.Name = '${req.query.name}';`;
+  }
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
 
 app.get("/curators", (req, res) => {
   const query = "SELECT * FROM CURATOR";

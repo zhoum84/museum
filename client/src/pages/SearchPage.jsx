@@ -4,16 +4,16 @@ import axios from "axios";
 export const SearchPage = () => {
   const [search, setSearch] = useState("artist");
   const [searchByName, setSearchByName] = useState(true);
-  
-// Search Functions
-// Search_artist
+  const [query, setQuery] = useState("");
+  // Search Functions
+  // Search_artist
 
-// Search_artwork
+  // Search_artwork
 
-// Search_exhibition
+  // Search_exhibition
 
-// Museum Information
-// Get_museum_info
+  // Museum Information
+  // Get_museum_info
 
   const [res, setRes] = useState([]);
   const handleClick = (e) => {
@@ -22,31 +22,50 @@ export const SearchPage = () => {
 
   const elongateId = (id) => {
     const obj = {
-      "Mid" : "Museum ID",
-      "Eid" : "Exhibition ID",
-      "Artist_id" : "Artist ID",
-      "Art_id" : "Art ID",
-      "Cid" : "Curator ID",
-    }
+      Mid: "Museum ID",
+      Eid: "Exhibition ID",
+      Artist_id: "Artist ID",
+      Art_id: "Art ID",
+      Cid: "Curator ID",
+    };
 
-    console.log(Object.keys(obj))
-
-    console.log(obj["Mid"])
-    if (Object.keys(obj).includes(id)){
+    if (Object.keys(obj).includes(id)) {
       return obj[id];
     }
     return id;
-  }
+  };
   async function getData() {
     try {
       const response = await axios.get("http://localhost:4000/");
       console.log("Data:", response.data);
-      setRes(response.data)
-
+      setRes(response.data);
     } catch (error) {
       console.error("Error making GET request:", error);
     }
   }
+
+  async function makeSearch() {
+    try {
+      if (searchByName) {
+        const response = await axios.get("http://localhost:4000/museums", {
+          params: { name: query },
+        });
+        console.log("Data:", response.data);
+        setRes(response.data)
+      }
+      else {
+        const response = await axios.get("http://localhost:4000/museums", {
+          params: { id: query },
+        });
+        console.log("Data:", response.data);
+        setRes(response.data)
+      }
+      
+    } catch (error) {
+      console.error("Error making GET request:", error);
+    }
+  }
+
   return (
     <div>
       What would you like to search?
@@ -88,31 +107,46 @@ export const SearchPage = () => {
           Museum
         </label>
       </form>
-      
-      <div>Search by: 
-      <label>
-        <input type="radio" checked={searchByName} onClick={() => setSearchByName(true)} />Name
-      </label>
-      <label>
-        <input type="radio" checked={!searchByName} onClick={() => setSearchByName(false)}/> ID
-      </label>
+      <div>
+        Search by:{" "}
+        <label>
+          <input
+            type="radio"
+            checked={searchByName}
+            onClick={() => setSearchByName(true)}
+          />
+          Name
+        </label>
+        <label>
+          <input
+            type="radio"
+            checked={!searchByName}
+            onClick={() => setSearchByName(false)}
+          />{" "}
+          ID
+        </label>
       </div>
-      Enter {search} {searchByName ? "name: " : "id: "}<input type="text" /> 
-      <button onClick={getData}>
-        Search!
-      </button>
-      <table>
-
-      <tr>
-      {res.length > 0 && Object.keys(res[0]).map(k => <td>{elongateId(k)}</td>)}
-      </tr>
-      {res.map(obj => <tr>{Object.entries(obj).map(([key, value]) => (
-        <td key={key}>
-          {value}
-        </td>
-        
-      ))}</tr>)}
-      </table>
+      Enter {search} {searchByName ? "name: " : "id: "}
+      <input 
+        type="text" 
+        value={query} 
+        onChange={e => setQuery(e.target.value)}/>
+      <button onClick={makeSearch}>Search!</button>
+      <div className={"flex-col"}>
+        <table>
+          <tr>
+            {res.length > 0 &&
+              Object.keys(res[0]).map((k) => <td>{elongateId(k)}</td>)}
+          </tr>
+          {res.map((obj) => (
+            <tr>
+              {Object.entries(obj).map(([key, value]) => (
+                <td key={key}>{value}</td>
+              ))}
+            </tr>
+          ))}
+        </table>
+      </div>
     </div>
   );
 };
