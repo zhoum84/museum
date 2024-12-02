@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Home from "./pages/Home";
 import { SearchPage } from "./pages/SearchPage";
 import { CuratorPage } from "./pages/CuratorPage";
-
+import { ArtistPage } from "./pages/ArtistPage";
 function App() {
   return (
     <>
@@ -14,6 +14,7 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/search' element={<SearchPage/>}/>
           <Route path='/curators' element={<CuratorPage/>}/>
+          <Route path='/artist' element={<ArtistPage/>}/>
           </Routes>
         </div>
       </Router>

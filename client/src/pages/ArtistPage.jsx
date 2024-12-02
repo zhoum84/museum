@@ -3,13 +3,13 @@ import { useState } from "react";
 import axios from "axios";
 
 
-export const CuratorPage = () => {
+export const ArtistPage = () => {
   const [action, setAction] = useState("view");
-//   Update_curator
+  // Update_artwork
 
-//   Fire_curator
+  // Update_artist
   
-//   Hire_curator
+  // Update_series  
   const [res, setRes] = useState([]);
   const handleClick = (e) => {
     setAction(e.target.value);
@@ -41,7 +41,7 @@ export const CuratorPage = () => {
   
   return (
     <div>
-      Manage Curators
+      Manage Artists and Artwork
       <form className={"form"}>
         <label>
           <input
@@ -50,7 +50,7 @@ export const CuratorPage = () => {
             checked={action === "view"}
             onClick={(e) => handleClick(e)}
           />{" "}
-          View
+          Update Artist
         </label>
         <label>
           <input
@@ -59,7 +59,7 @@ export const CuratorPage = () => {
             checked={action=== "update"}
             onClick={(e) => handleClick(e)}
           />{" "}
-          Update Curator Exhibits
+          Update Artwork
         </label>
         <label>
           <input
@@ -68,16 +68,7 @@ export const CuratorPage = () => {
             checked={action=== "hire"}
             onClick={(e) => handleClick(e)}
           />
-          Hire
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="fire"
-            checked={action=== "fire"}
-            onClick={(e) => handleClick(e)}
-          />{" "}
-          Fire
+          Update Series
         </label>
       </form>
       

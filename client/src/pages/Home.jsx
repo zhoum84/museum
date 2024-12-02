@@ -17,6 +17,9 @@ const Home = () => {
     navigate('/curators')
   }
 
+  const handleArtistClick = () => {
+    navigate('/artist')
+  }
   return (
     <>
       <section className="heading">
@@ -25,7 +28,7 @@ const Home = () => {
 
       <button className="btn btn-blue-block" onClick={handleSearchClick}>Search Actions</button>
       <button className="btn btn-blue-block" onClick={handleClick}>Exhibit Management</button>
-      <button className="btn btn-blue-block" onClick={handleClick}>Artist and Artwork Management</button>
+      <button className="btn btn-blue-block" onClick={handleArtistClick}>Artist and Artwork Management</button>
       <button className="btn btn-blue-block" onClick={handleCuratorClick}>Curator Management</button>
       <button className="btn btn-blue-block" onClick={handleClick}>User Exhibit</button>
     <div>
