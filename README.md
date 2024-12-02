@@ -9,7 +9,7 @@ To run the backend:
 2. node app.js (we should rename this later)
 
 To run the frontend:
-1. cd museum
+1. cd client
 2. npm install
 3. npm start
 
