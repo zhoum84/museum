@@ -459,13 +459,13 @@ VALUES (2, 3);
 
 -- 4a - Update_artwork
 UPDATE ARTWORK
-SET Name = 'new_name', Date_created = 'new_date', Height = new_height, Width = new_width, Length = new_length, Status = 'new_status'
-WHERE Art_id = artwork_id;
+SET Name = 'Mona Lisa'
+WHERE Art_id = 1;
 
 -- 4b - Update_artist
 UPDATE ARTIST
-SET Name = 'new_name', date_of_birth = 'new_date_of_birth', date_of_death = 'new_date_of_death'
-WHERE Artist_id = artist_id;
+SET date_of_death = '2024-12-01'
+WHERE Artist_id = 3;
 
 UPDATE ARTIST_MEDIUM_DISCIPLINE
 SET Medium_discipline = 'Other'
@@ -473,27 +473,27 @@ WHERE Artist_id = 1;
 
 -- 4c - Update_series
 DELETE FROM SERIES_HAS_ARTWORK
-WHERE Sid = series_id AND Art_id = artwork_id;
+WHERE Sid = 1 AND Art_id = 1;
 
 INSERT INTO SERIES_HAS_ARTWORK (Sid, Art_id)
-VALUES (new_series_id, artwork_id);
+VALUES (2, 1);
 
 -- 5a - Update_curator
 UPDATE CURATES
-SET Eid = new_exhibit_id
-WHERE Cid = curator_id AND Eid = old_exhibit_id;
+SET Eid = 1
+WHERE Cid = 2 AND Eid = 2;
 
 -- 5b - Fire_curator
 DELETE FROM EMPLOYS
-WHERE Cid = curator_id AND Mid = museum_id;
+WHERE Cid = 1 AND Mid = 1;
 
 -- 5c - Hire_curator
 INSERT INTO EMPLOYS (Cid, Mid)
-VALUES (curator_id, museum_id);
+VALUES (1, 1);
 
 -- 6 - Get_museum_info
 SELECT M.*, C.Name AS ContactName, C.Email, C.Phone_num, H.Day, H.Opening_time, H.Closing_time
 FROM MUSEUM M, CONTACT C, HOURS H
 WHERE M.Mid = C.Mid
 AND M.Mid = H.Mid
-AND M.Mid = 'museum_id';
+AND M.Mid = '1';
