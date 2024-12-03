@@ -1,25 +1,23 @@
-import { FaHome } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { FaHome } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const navigate = useNavigate();
-  const onPress = () =>{
-    navigate('/');
-  }
+  const onPress = () => {
+    navigate("/");
+  };
   return (
-    <header className='header'>
-      <div className='logo'>
-      Museums
-      </div>
+    <header className="header">
+      <div className="logo">CUR8</div>
       <ul>
-          <li>
-              <button className='btn hovPurp' onClick={onPress}> 
-                <FaHome /> Home
-              </button>
-            </li>
+        <li>
+          <button className="btn hovPurp" onClick={onPress}>
+            <FaHome /> Home
+          </button>
+        </li>
       </ul>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;

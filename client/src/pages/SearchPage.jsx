@@ -37,14 +37,15 @@ export const SearchPage = () => {
 
   async function makeSearch() {
     try {
-      console.log(search)
+      console.log(search);
       const response = await axios.get(`http://localhost:4000/${search}`, {
-        params: { ...searchByName && {name: query}, 
-        ...!searchByName && {id: query} 
-      },
+        params: {
+          ...(searchByName && { name: query }),
+          ...(!searchByName && { id: query }),
+        },
       });
       console.log("Data:", response.data);
-      setRes(response.data)
+      setRes(response.data);
     } catch (error) {
       console.error("Error making GET request:", error);
     }
@@ -111,26 +112,27 @@ export const SearchPage = () => {
         </label>
       </div>
       Enter {search} {searchByName ? "'s name: " : "'s id: "}
-      <input 
-        type="text" 
-        value={query} 
-        onChange={e => setQuery(e.target.value)}/>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
       <button onClick={makeSearch}>Search!</button>
       <div className={"flex-col"}>
         <table>
           <tbody>
-          <tr>
-            {res.length > 0 &&
-              Object.keys(res[0]).map((k) => <td>{elongateId(k)}</td>)}
-          </tr>
-          {res.map((obj) => (
             <tr>
-              {Object.entries(obj).map(([key, value]) => (
-                <td key={key}>{value}</td>
-              ))}
+              {res.length > 0 &&
+                Object.keys(res[0]).map((k) => <td>{elongateId(k)}</td>)}
             </tr>
-          ))}
-        </tbody>
+            {res.map((obj) => (
+              <tr>
+                {Object.entries(obj).map(([key, value]) => (
+                  <td key={key}>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
