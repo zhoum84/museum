@@ -5,8 +5,6 @@ import axios from "axios";
 // Add_new_exhibit
 // Delete_exhibit
 
-// Rotate_exhibit
-// Update_artwork_status
 // Update_exhibit
 
 export const ExhibitPage = () => {
@@ -15,6 +13,12 @@ export const ExhibitPage = () => {
   const [curatorId, setCuratorId] = useState("");
   const [exhibitName, setExhibitName] = useState("");
   const [exhibitId, setExhibitId] = useState("");
+  const [newEid, setNewEid] = useState("");
+
+  const [museumId, setMuseumId] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const [galleryName, setGalleryName] = useState("");
   const [artistId, setArtistId] = useState("");
   const [artId, setArtId] = useState("");
@@ -90,8 +94,11 @@ export const ExhibitPage = () => {
     }
     try {
       const response = await axios.put("http://localhost:4000/exhibit/rotate", {
-        exhibitId,
-        galleryName,
+        eid: exhibitId,
+        gallery_name: galleryName,
+        mid: museumId,
+        startDate,
+        endDate
       });
       console.log("Rotate exhibit response:", response.data);
       setResponseMessage("Exhibit rotated successfully.");
@@ -131,15 +138,16 @@ export const ExhibitPage = () => {
       return;
     }
     try {
-      const response = await axios.put("http://localhost:4000/exhibit/update", {
+      const response = await axios.post("http://localhost:4000/exhibit/update", {
         exhibitId,
         artId,
+        newEid
       });
       console.log("Update exhibit response:", response.data);
       setResponseMessage("Exhibit updated successfully.");
       setRes(response.data);
     } catch (error) {
-      console.error("Error making PUT request to update exhibit:", error);
+      console.error("Error making POST request to update exhibit:", error);
       setResponseMessage("Error updating exhibit.");
     }
   };
@@ -245,8 +253,8 @@ export const ExhibitPage = () => {
         </div>
       )}
       {action === "rotate" && (
-        <div>
-          <div>
+        <div >
+          <div className="flex-col">
             <label>
               Enter Exhibit ID:
               <input
@@ -255,6 +263,15 @@ export const ExhibitPage = () => {
                 onChange={(e) => setExhibitId(e.target.value)}
               />
             </label>
+            <label>
+              Enter Museum ID:
+              <input
+                type="text"
+                value={museumId}
+                onChange={(e) => setMuseumId(e.target.value)}
+              />
+            </label>
+
           </div>
           <div>
             <label>
@@ -266,6 +283,10 @@ export const ExhibitPage = () => {
               />
             </label>
           </div>
+                  <label>
+          Enter time range: (YYYY-MM-DD) <input type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>{" to "} <input type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+        </label>
+
           <button onClick={rotateExhibit}>Rotate Exhibit</button>
         </div>
       )}
@@ -274,7 +295,7 @@ export const ExhibitPage = () => {
           <div>Update Exhibit with Artwork</div>
           <div>
             <label>
-              Enter Exhibit ID:
+              Enter Old Exhibit ID:
               <input
                 type="text"
                 value={exhibitId}
@@ -282,6 +303,17 @@ export const ExhibitPage = () => {
               />
             </label>
           </div>
+          <div>
+            <label>
+              Enter New Exhibit ID:
+              <input
+                type="text"
+                value={newEid}
+                onChange={(e) => setNewEid(e.target.value)}
+              />
+            </label>
+          </div>
+
           <div>
             <label>
               Enter Art ID:
@@ -292,6 +324,7 @@ export const ExhibitPage = () => {
               />
             </label>
           </div>
+
           <button onClick={updateExhibit}>Update Exhibit</button>
         </div>
       )}

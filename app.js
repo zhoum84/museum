@@ -391,7 +391,7 @@ app.post("/artwork/update-status", async (req, res) => {
   }
 
   let query = `UPDATE ARTWORK
-  SET Status = ${status}
+  SET Status = '${status}'
   WHERE Art_id = ${artId};`;
   console.log(query);
 
@@ -531,6 +531,43 @@ app.post("/curators/new", (req, res) => {
   });
 });
 
+
+app.post("/exhibit/update", (req, res) => {
+  const data = req.body;
+  
+  console.log(data.exhibitId, data.artId)
+  const query = `DELETE FROM EXHIBITION_HAS_ARTWORK
+WHERE Eid = ${data.exhibitId} AND Art_id = ${data.artId};
+
+INSERT INTO EXHIBITION_HAS_ARTWORK (Eid, Art_id) VALUES (2, 1);`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage);
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+
+app.put("/exhibit/rotate", (req, res) => {
+  const data = req.body;
+  const query = `UPDATE HOSTS
+SET Mid = ${data.mid}, gallery_name = '${data.gallery_name}', start_date = '${data.startDate}', end_date = '${data.endDate}'
+WHERE Eid = ${data.eid};
+`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage);
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
 // PUT request
 app.put("/", (req, res) => {
   const data = req.body;
