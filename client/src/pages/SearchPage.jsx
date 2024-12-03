@@ -110,7 +110,7 @@ export const SearchPage = () => {
           ID
         </label>
       </div>
-      Enter {search} {searchByName ? "name: " : "id: "}
+      Enter {search} {searchByName ? "'s name: " : "'s id: "}
       <input 
         type="text" 
         value={query} 
@@ -118,6 +118,7 @@ export const SearchPage = () => {
       <button onClick={makeSearch}>Search!</button>
       <div className={"flex-col"}>
         <table>
+          <tbody>
           <tr>
             {res.length > 0 &&
               Object.keys(res[0]).map((k) => <td>{elongateId(k)}</td>)}
@@ -129,6 +130,7 @@ export const SearchPage = () => {
               ))}
             </tr>
           ))}
+        </tbody>
         </table>
       </div>
     </div>

@@ -167,8 +167,12 @@ AND E.Name='${req.query.name}';`;
   });
 });
 
+// Get all curators and the museums they are employed at
 app.get("/curators", (req, res) => {
-  const query = "SELECT * FROM CURATOR";
+  const query = `SELECT C.*, M.*
+FROM CURATOR C, EMPLOYS E, MUSEUM M
+WHERE C.Cid = E.Cid 
+AND E.Mid = M.MID`;
   db.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
