@@ -530,10 +530,6 @@ app.post("/curators/new", (req, res) => {
     res.json(results);
   });
 });
-<<<<<<< HEAD
-=======
-});
->>>>>>> main
 
 // PUT request
 app.put("/", (req, res) => {

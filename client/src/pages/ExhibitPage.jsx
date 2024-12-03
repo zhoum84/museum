@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+
+// Add_new_exhibit
+// Delete_exhibit
+
+// Rotate_exhibit
+// Update_artwork_status
+// Update_exhibit
+
 export const ExhibitPage = () => {
   const [action, setAction] = useState("view");
   const [res, setRes] = useState([]);
