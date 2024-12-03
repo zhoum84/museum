@@ -168,7 +168,7 @@ AND E.Name='${req.query.name}';`;
 });
 
 // Get all curators and the museums they are employed at
-app.get("/curators", (req, res) => {
+app.get("/curators/view", (req, res) => {
   const query = `SELECT C.*, M.*
 FROM CURATOR C, EMPLOYS E, MUSEUM M
 WHERE C.Cid = E.Cid 
@@ -184,11 +184,36 @@ AND E.Mid = M.MID`;
   });
 });
 
-
 // POST request
-app.post("/", (req, res) => {
+app.post("/curators/hire", (req, res) => {
   const data = req.body;
-  res.send(`Hello, this is a POST request with data: ${JSON.stringify(data)}`);
+  const query = `INSERT INTO EMPLOYS (Cid, Mid)
+VALUES (${data.cid}, ${data.mid});
+` 
+db.query(query, (err, results) => {
+  if (err) {
+    console.error("Error executing query:", err.sqlMessage);
+    res.status(500).send("Error executing query: " + err.sqlMessage );
+    return;
+  }
+  console.log(results)
+  res.json(results);
+});
+});
+
+app.post("/curators/fire", (req, res) => {
+  const data = req.body;
+  const query = `DELETE FROM EMPLOYS 
+  WHERE Cid = ${data.cid} AND Mid = ${data.mid};` 
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage );
+      return;
+    }
+  console.log(results)
+  res.json(results);
+});
 });
 
 // PUT request
