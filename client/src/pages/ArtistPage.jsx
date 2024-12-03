@@ -35,27 +35,30 @@ export const ArtistPage = () => {
   const updateArtwork = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put("http://localhost:4000/artwork/update", {
-        artwork_id,
-        height,
-        width,
-        length,
-        status,
-        name,
-        medium,
-        material,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/artwork/update",
+        {
+          artwork_id,
+          height,
+          width,
+          length,
+          status,
+          name,
+          medium,
+          material,
+        }
+      );
       console.log("Artwork update response:", response.data);
       setRes(response.data);
     } catch (error) {
-      console.error("Error making PUT request for artwork update:", error);
+      console.error("Error making POST request for artwork update:", error);
     }
   };
 
   const updateArtist = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put("http://localhost:4000/artist/update", {
+      const response = await axios.post("http://localhost:4000/artist/update", {
         artist_id,
         name,
         date_of_death,
@@ -63,14 +66,14 @@ export const ArtistPage = () => {
       console.log("Artist update response:", response.data);
       setRes(response.data);
     } catch (error) {
-      console.error("Error making PUT request for artist update:", error);
+      console.error("Error making POST request for artist update:", error);
     }
   };
 
   const updateArtistMediumDiscipline = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         "http://localhost:4000/artist/medium-discipline/update",
         {
           artist_id,
@@ -82,7 +85,7 @@ export const ArtistPage = () => {
       setRes(response.data);
     } catch (error) {
       console.error(
-        "Error making PUT request for artist medium/discipline update:",
+        "Error making POST request for artist medium/discipline update:",
         error
       );
     }
@@ -91,7 +94,7 @@ export const ArtistPage = () => {
   const updateSeries = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put("http://localhost:4000/series/update", {
+      const response = await axios.post("http://localhost:4000/series/update", {
         artwork_id: artwork_id,
         series_id: series_id,
         new_series_id: new_series_id,
@@ -99,7 +102,7 @@ export const ArtistPage = () => {
       console.log("Data:", response.data);
       setRes(response.data);
     } catch (error) {
-      console.error("Error making PUT request:", error);
+      console.error("Error making POST request:", error);
     }
   };
 
