@@ -36,7 +36,7 @@ export const ExhibitPage = () => {
       return;
     }
     try {
-      const response = await axios.put(
+      const response = await axios.post(
         "http://localhost:4000/artwork/update-status",
         {
           artId,
@@ -47,7 +47,7 @@ export const ExhibitPage = () => {
       setResponseMessage("Artwork status updated successfully.");
       setRes(response.data);
     } catch (error) {
-      console.error("Error making PUT request for artwork status:", error);
+      console.error("Error making POST request for artwork status:", error);
       setResponseMessage("Error updating artwork status.");
     }
   };
@@ -101,7 +101,7 @@ export const ExhibitPage = () => {
       return;
     }
     try {
-      const response = await axios.delete(
+      const response = await axios.post(
         "http://localhost:4000/exhibit/delete",
         {
           data: { exhibitId },
@@ -140,173 +140,150 @@ export const ExhibitPage = () => {
     <div>
       Manage Exhibits
       <form className="form">
-        <label>
-          <input
-            type="radio"
-            value="update"
-            checked={action === "update"}
-            onClick={handleClick}
-          />
-          Update Artwork Status
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="hire"
-            checked={action === "hire"}
-            onClick={handleClick}
-          />
-          Add New Exhibit
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="rotate"
-            checked={action === "rotate"}
-            onClick={handleClick}
-          />
-          Rotate Exhibit
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="fire"
-            checked={action === "fire"}
-            onClick={handleClick}
-          />
-          Delete Exhibit
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="update-exhibit"
-            checked={action === "update-exhibit"}
-            onClick={handleClick}
-          />
-          Update Exhibit with Artwork
-        </label>
-      </form>
-      <div>
-        <label>
-          Enter curator ID:
-          <input
-            type="text"
-            value={curatorId}
-            onChange={(e) => setCuratorId(e.target.value)}
-          />
-        </label>
-      </div>
-      {action === "update" && (
         <div>
           <label>
-            Enter Art ID:
             <input
-              type="text"
-              value={artId}
-              onChange={(e) => setArtId(e.target.value)}
+              type="radio"
+              value="update"
+              checked={action === "update"}
+              onClick={handleClick}
             />
+            Update Artwork Status
           </label>
+        </div>
+        <div>
           <label>
-            Enter Status:
             <input
-              type="text"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              type="radio"
+              value="hire"
+              checked={action === "hire"}
+              onClick={handleClick}
             />
+            Add New Exhibit
           </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="rotate"
+              checked={action === "rotate"}
+              onClick={handleClick}
+            />
+            Rotate Exhibit
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="delete"
+              checked={action === "delete"}
+              onClick={handleClick}
+            />
+            Delete Exhibit
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="update-exhibit"
+              checked={action === "update-exhibit"}
+              onClick={handleClick}
+            />
+            Update Exhibit with Artwork
+          </label>
+        </div>
+      </form>
+      {action === "update" && (
+        <div>
+          <div>
+            <label>
+              Enter Art ID:
+              <input
+                type="text"
+                value={artId}
+                onChange={(e) => setArtId(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter Status:
+              <input
+                type="text"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              />
+            </label>
+          </div>
           <button onClick={updateArtworkStatus}>Update Status</button>
         </div>
       )}
-      {action === "hire" && (
+      {action === "delete" && (
         <div>
-          <label>
-            Enter Exhibit Name:
-            <input
-              type="text"
-              value={exhibitName}
-              onChange={(e) => setExhibitName(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter Exhibit ID:
-            <input
-              type="text"
-              value={exhibitId}
-              onChange={(e) => setExhibitId(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter Gallery Name:
-            <input
-              type="text"
-              value={galleryName}
-              onChange={(e) => setGalleryName(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter Curator ID:
-            <input
-              type="text"
-              value={curatorId}
-              onChange={(e) => setCuratorId(e.target.value)}
-            />
-          </label>
-          <button onClick={addNewExhibit}>Add New Exhibit</button>
-        </div>
-      )}
-      {action === "fire" && (
-        <div>
-          <label>
-            Enter Exhibit ID:
-            <input
-              type="text"
-              value={exhibitId}
-              onChange={(e) => setExhibitId(e.target.value)}
-            />
-          </label>
-          <button onClick={deleteExhibit}>Delete</button>
+          <div>
+            <label>
+              Enter Exhibit Id:
+              <input
+                type="text"
+                value={exhibitId}
+                onChange={(e) => setExhibitId(e.target.value)}
+              />
+            </label>
+          </div>
+          <button onClick={deleteExhibit}>Delete Exhibit</button>
         </div>
       )}
       {action === "rotate" && (
         <div>
-          <label>
-            Enter Exhibit ID:
-            <input
-              type="text"
-              value={exhibitId}
-              onChange={(e) => setExhibitId(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter New Gallery Name:
-            <input
-              type="text"
-              value={galleryName}
-              onChange={(e) => setGalleryName(e.target.value)}
-            />
-          </label>
+          <div>
+            <label>
+              Enter Exhibit ID:
+              <input
+                type="text"
+                value={exhibitId}
+                onChange={(e) => setExhibitId(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter New Gallery Name:
+              <input
+                type="text"
+                value={galleryName}
+                onChange={(e) => setGalleryName(e.target.value)}
+              />
+            </label>
+          </div>
           <button onClick={rotateExhibit}>Rotate Exhibit</button>
         </div>
       )}
       {action === "update-exhibit" && (
         <div>
-          Update Exhibit with Artwork
-          <label>
-            Enter Exhibit ID:
-            <input
-              type="text"
-              value={exhibitId}
-              onChange={(e) => setExhibitId(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter Art ID:
-            <input
-              type="text"
-              value={artId}
-              onChange={(e) => setArtId(e.target.value)}
-            />
-          </label>
+          <div>Update Exhibit with Artwork</div>
+          <div>
+            <label>
+              Enter Exhibit ID:
+              <input
+                type="text"
+                value={exhibitId}
+                onChange={(e) => setExhibitId(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter Art ID:
+              <input
+                type="text"
+                value={artId}
+                onChange={(e) => setArtId(e.target.value)}
+              />
+            </label>
+          </div>
           <button onClick={updateExhibit}>Update Exhibit</button>
         </div>
       )}
