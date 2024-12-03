@@ -404,7 +404,7 @@ AND E.Eid = EHA.Eid
 AND AR.Name='Artist Annie';
 
 -- 2b - Search_artwork
-SELECT M.*, H.start_date, H.end_date
+SELECT A.Name as Artwork_Name, A.Art_id, M.*, H.start_date, H.end_date, E.Name AS Exhibit_name, H.Gallery_name
 FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M
 WHERE A.Art_id = EHA.Art_id
 AND EHA.Eid = H.Eid
@@ -412,9 +412,11 @@ AND H.Mid = M.Mid
 AND (A.Name='Artwork A' OR A.Art_id = 1);
 
 -- 2c - Search_exhibition
-SELECT M.*, H.start_date, H.end_date
-FROM EXHIBITION E, HOSTS H, MUSEUM M
-WHERE E.Eid = H.Eid
+SELECT E.Name as Exhibition_name, E.Eid, H.Gallery_name, M.*
+FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
+WHERE A.Art_id = EHA.Art_id
+AND EHA.Eid = H.Eid
+AND EHA.Eid = E.Eid
 AND H.Mid = M.Mid
 AND (E.Name='Exhibition A' OR E.Eid = 1);
 

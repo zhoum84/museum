@@ -100,6 +100,73 @@ AND AR.Name='${req.query.name}'`;
   });
 });
 
+// Search artists by name or id
+app.get("/artworks", (req, res) => {
+
+  let query = "";
+  if ("id" in req.query){
+    query = `SELECT A.Name as Artwork_Name, M.*, H.start_date, H.end_date, E.Name AS Exhibit_name, H.Gallery_name
+FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
+WHERE A.Art_id = EHA.Art_id
+AND EHA.Eid = H.Eid
+AND EHA.Eid = E.Eid
+AND H.Mid = M.Mid
+AND A.Art_id = ${req.query.id};`;
+  } else {
+    query = `SELECT A.Name as Artwork_Name, M.*, H.start_date, H.end_date, E.Name AS Exhibit_name, H.Gallery_name
+FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
+WHERE A.Art_id = EHA.Art_id
+AND EHA.Eid = H.Eid
+AND EHA.Eid = E.Eid
+AND H.Mid = M.Mid
+AND A.Name='${req.query.name}';`;
+  }
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
+
+// Search Exhibitions by name or id
+app.get("/exhibitions", (req, res) => {
+
+  let query = "";
+  if ("id" in req.query){
+    query = `SELECT E.Name as Exhibition_name, E.Eid, H.Gallery_name, M.*
+FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
+WHERE A.Art_id = EHA.Art_id
+AND EHA.Eid = H.Eid
+AND EHA.Eid = E.Eid
+AND H.Mid = M.Mid
+AND E.Eid = ${req.query.id} ;`;
+  } else {
+    query = `SELECT E.Name as Exhibition_name, E.Eid, H.Gallery_name, M.*
+FROM ARTWORK A, EXHIBITION_HAS_ARTWORK EHA, HOSTS H, MUSEUM M, EXHIBITION E
+WHERE A.Art_id = EHA.Art_id
+AND EHA.Eid = H.Eid
+AND EHA.Eid = E.Eid
+AND H.Mid = M.Mid
+AND E.Name='${req.query.name}';`;
+  }
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
 app.get("/curators", (req, res) => {
   const query = "SELECT * FROM CURATOR";
   db.query(query, (err, results) => {

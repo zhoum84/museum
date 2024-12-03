@@ -75,8 +75,8 @@ export const SearchPage = () => {
         <label>
           <input
             type="radio"
-            value="exhibits"
-            checked={search === "exhibits"}
+            value="exhibitions"
+            checked={search === "exhibitions"}
             onClick={(e) => handleClick(e)}
           />
           Exhibit
