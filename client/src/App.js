@@ -5,6 +5,7 @@ import { SearchPage } from "./pages/SearchPage";
 import { CuratorPage } from "./pages/CuratorPage";
 import { ArtistPage } from "./pages/ArtistPage";
 import { ExhibitPage } from "./pages/ExhibitPage";
+import { ExhibitInfo } from "./pages/ExhibitInfo";
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Route path='/curators' element={<CuratorPage/>}/>
           <Route path='/artists' element={<ArtistPage/>}/>
           <Route path='/exhibits' element={<ExhibitPage/>}/>
+          <Route path='/exhibitinfo' element={<ExhibitInfo/>}/>
           </Routes>
         </div>
       </Router>
