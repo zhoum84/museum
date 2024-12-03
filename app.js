@@ -33,6 +33,85 @@ app.get("/", (req, res) => {
   });
 });
 
+app.get("/exhibitions/artwork", (req, res) => {
+
+  const data = req.query;
+  const query = `SELECT A.*, S.Name AS SeriesName, AR.Name AS ArtistName, P.Paint_type, SCL.Technique, PH.Film, I.Install_type, O.Medium_exception, M.Material
+FROM EXHIBITION_HAS_ARTWORK EHA, ARTWORK A, CREATES C, ARTIST AR, SERIES_HAS_ARTWORK SHA, SERIES S, PAINTING P, SCULPTURE SCL, PHOTO PH, INSTALLATION I, OTHER O, MATERIAL M
+WHERE EHA.Art_id = A.Art_id
+AND A.Art_id = C.Art_id
+AND C.Artist_id = AR.Artist_id
+AND A.Art_id = SHA.Art_id
+AND SHA.Sid = S.Sid
+AND A.Art_id = P.Art_id
+AND A.Art_id = SCL.Art_id
+AND A.Art_id = PH.Art_id
+AND A.Art_id = I.Art_id
+AND A.Art_id = O.Art_id
+AND A.Art_id = M.Art_id
+AND EHA.Eid = ${data.eid};
+`;
+console.log(query)
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
+
+
+
+app.get("/exhibitions", (req, res) => {
+
+  const data = req.query;
+  const query = `SELECT E.*
+FROM MUSEUM M, HOSTS H, EXHIBITION E
+WHERE M.Mid = H.Mid
+AND H.Eid = E.Eid
+AND M.Name = '${data.name}'
+AND (H.start_date BETWEEN '${data.startDate}' AND '${data.endDate}'
+OR H.end_date BETWEEN '${data.startDate}' AND '${data.endDate}');
+`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
+
+app.get("/exhibitions/oldest", (req, res) => {
+
+  const data = req.query;
+  const query = `SELECT A.*
+FROM EXHIBITION_HAS_ARTWORK EHA, ARTWORK A
+WHERE EHA.Art_id = A.Art_id
+AND EHA.Eid = ${data.eid}
+ORDER BY A.Date_created ASC
+LIMIT 1;
+`;
+console.log(query)
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
+
 // Search museum by name or id
 app.get("/museums", (req, res) => {
   let query = "";
@@ -451,6 +530,10 @@ app.post("/curators/new", (req, res) => {
     res.json(results);
   });
 });
+<<<<<<< HEAD
+=======
+});
+>>>>>>> main
 
 // PUT request
 app.put("/", (req, res) => {

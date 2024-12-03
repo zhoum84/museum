@@ -21,30 +21,26 @@ const Home = () => {
   };
 
   const handleExhibitClick = () => {
-    navigate("/exhibits");
-  };
+    navigate('/exhibits')
+  }
+
+  const handleUserExhibitClick = () => {
+    navigate('/exhibitinfo')
+  }
   return (
     <>
       <section className="heading">
         <h1>Museum App</h1>
       </section>
 
-      <button className="btn btn-blue-block" onClick={handleSearchClick}>
-        Search Actions
-      </button>
-      <button className="btn btn-blue-block" onClick={handleExhibitClick}>
-        Exhibit Management
-      </button>
-      <button className="btn btn-blue-block" onClick={handleArtistClick}>
-        Artist and Artwork Management
-      </button>
-      <button className="btn btn-blue-block" onClick={handleCuratorClick}>
-        Curator Management
-      </button>
-      <button className="btn btn-blue-block" onClick={handleClick}>
-        User Exhibit
-      </button>
-      <div></div>
+      <button className="btn btn-blue-block" onClick={handleSearchClick}>Search Actions</button>
+      <button className="btn btn-blue-block" onClick={handleExhibitClick}>Exhibit Management</button>
+      <button className="btn btn-blue-block" onClick={handleArtistClick}>Artist and Artwork Management</button>
+      <button className="btn btn-blue-block" onClick={handleCuratorClick}>Curator Management</button>
+      <button className="btn btn-blue-block" onClick={handleUserExhibitClick}>User Exhibit</button>
+    <div>
+
+    </div>
     </>
   );
 };
