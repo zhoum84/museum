@@ -214,7 +214,7 @@ export const CuratorPage = () => {
 
       </form>
       <div className="flex-col">
-        {action !== "view" && <label>
+        {action !== "view" && action !== "view-all" && <label>
           Enter curator id:{" "}
           <input
             type="text"
