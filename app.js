@@ -304,6 +304,58 @@ VALUES (${data.new_series_id}, ${data.artwork_id});`;
   });
 });
 
+app.post("/artwork/update-status", async (req, res) => {
+  const { artId, status } = req.body;
+
+  if (!artId || !status) {
+    return res.status(400).json({ message: "Art ID and status are required." });
+  }
+
+  let query = `UPDATE ARTWORK
+  SET Status = ${status}
+  WHERE Art_id = ${artId};`;
+  console.log(query);
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log("Query results:", results);
+    res.json({
+      message: "Artist medium and discipline updated successfully",
+      results,
+    });
+  });
+});
+
+app.post("/exhibit/delete", (req, res) => {
+  const data = req.body;
+  let query = `DELETE FROM HOSTS
+WHERE Eid = ${data.exhibitId};
+
+DELETE FROM EXHIBITION_HAS_ARTWORK
+WHERE Eid = ${data.exhibitId};
+
+DELETE FROM CURATES
+WHERE Eid = ${data.exhibitId};
+
+DELETE FROM EXHIBITION
+WHERE Eid = ${data.exhibitId};`;
+  console.log(query);
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+
+    console.log(results);
+    res.json(results);
+  });
+});
+
 app.get("/curators/view/all", (req, res) => {
   const query = `SELECT * FROM CURATOR`;
   db.query(query, (err, results) => {
