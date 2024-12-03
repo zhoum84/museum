@@ -167,12 +167,28 @@ AND E.Name='${req.query.name}';`;
   });
 });
 
-// Get all curators and the museums they are employed at
+app.get("/curators/view/all", (req, res) => {
+  const query = `SELECT * FROM CURATOR`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results)
+    res.json(results);
+  });
+});
+
+// Get employed curators and the museums they are employed at
 app.get("/curators/view", (req, res) => {
-  const query = `SELECT C.*, M.*
-FROM CURATOR C, EMPLOYS E, MUSEUM M
+  const query = `SELECT C.*, EX.Eid, EX.Name AS Exhibit_name, M.*
+FROM CURATOR C, EMPLOYS E, MUSEUM M, CURATES CR, EXHIBITION EX
 WHERE C.Cid = E.Cid 
-AND E.Mid = M.MID`;
+AND E.Mid = M.MID
+AND C.CID = CR.Cid
+AND EX.Eid = CR.Cid
+`;
   db.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
@@ -215,6 +231,38 @@ app.post("/curators/fire", (req, res) => {
   res.json(results);
 });
 });
+
+// update curator
+app.post("/curators/update", (req, res) => {
+  const data = req.body;
+  const query = `UPDATE CURATES SET ${data.newEid} 
+  WHERE Cid = ${data.cid} AND Eid = ${data.eid};` 
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage );
+      return;
+    }
+  console.log(results)
+  res.json(results);
+});
+});
+
+app.post("/curators/new",(req, res) => {
+  const data = req.body;
+  const query = `INSERT INTO CURATOR (Cid, Name) 
+  VALUES (${data.cid}, '${data.name}');` 
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage );
+      return;
+    }
+  console.log(results)
+  res.json(results);
+});
+});
+
 
 // PUT request
 app.put("/", (req, res) => {
