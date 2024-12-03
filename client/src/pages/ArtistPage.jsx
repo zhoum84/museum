@@ -20,7 +20,7 @@ export const ArtistPage = () => {
   // Artist details
   const [artist_name, setArtistName] = useState("");
   const [date_of_death, setDateOfDeath] = useState("");
-  const [artist_medium, setArtistMedium] = useState("");
+  const [artist_medium_discipline, setArtistMediumDiscipline] = useState("");
   const [discipline, setDiscipline] = useState("");
 
   // Series details
@@ -56,11 +56,12 @@ export const ArtistPage = () => {
   };
 
   const updateArtist = async (e) => {
+    console.log(artist_id, artist_name, date_of_death);
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:4000/artist/update", {
         artist_id,
-        name,
+        artist_name,
         date_of_death,
       });
       console.log("Artist update response:", response.data);
@@ -77,8 +78,7 @@ export const ArtistPage = () => {
         "http://localhost:4000/artist/medium-discipline/update",
         {
           artist_id,
-          medium,
-          discipline,
+          artist_medium_discipline,
         }
       );
       console.log("Artist Medium/Discipline update response:", response.data);
@@ -188,21 +188,11 @@ export const ArtistPage = () => {
 
           <div>
             <label>
-              Enter medium:{" "}
+              Enter medium/discipline:{" "}
               <input
                 type="text"
-                value={artist_medium}
-                onChange={(e) => setArtistMedium(e.target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Enter discipline:{" "}
-              <input
-                type="text"
-                value={discipline}
-                onChange={(e) => setDiscipline(e.target.value)}
+                value={artist_medium_discipline}
+                onChange={(e) => setArtistMediumDiscipline(e.target.value)}
               />
             </label>
           </div>
