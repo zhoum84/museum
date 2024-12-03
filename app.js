@@ -97,12 +97,7 @@ AND AR.Name='${req.query.name}'`;
   });
 });
 
-// Update artist
-app.post("/artists/update", (req, res) => {
-  let query = "";
-});
-
-// Search artworks by name or id
+// Search artists by name or id
 app.get("/artworks", (req, res) => {
   let query = "";
   if ("id" in req.query) {
@@ -123,25 +118,6 @@ AND H.Mid = M.Mid
 AND A.Name='${req.query.name}';`;
   }
 
-  db.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      res.status(500).send("Error executing query");
-      return;
-    }
-    console.log(results);
-    res.json(results);
-  });
-});
-
-// Update series
-app.put("/series/update", (req, res) => {
-  let query = `DELETE FROM SERIES_HAS_ARTWORK
-WHERE Sid = ${req.body.series_id} AND Art_id = ${req.body.artwork_id};
-
-INSERT INTO SERIES_HAS_ARTWORK (Sid, Art_id)
-VALUES (${req.body.new_series_id}, ${req.body.artwork_id});`;
-  console.log(query);
   db.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
@@ -185,12 +161,47 @@ AND E.Name='${req.query.name}';`;
   });
 });
 
-// Get all curators and the museums they are employed at
+// Update series
+app.post("/series/update", (req, res) => {
+  let query = `DELETE FROM SERIES_HAS_ARTWORK
+WHERE Sid = ${req.body.series_id} AND Art_id = ${req.body.artwork_id};
+
+INSERT INTO SERIES_HAS_ARTWORK (Sid, Art_id)
+VALUES (${req.body.new_series_id}, ${req.body.artwork_id});`;
+  console.log(query);
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+app.get("/curators/view/all", (req, res) => {
+  const query = `SELECT * FROM CURATOR`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+// Get employed curators and the museums they are employed at
 app.get("/curators/view", (req, res) => {
-  const query = `SELECT C.*, M.*
-FROM CURATOR C, EMPLOYS E, MUSEUM M
+  const query = `SELECT C.*, EX.Eid, EX.Name AS Exhibit_name, M.*
+FROM CURATOR C, EMPLOYS E, MUSEUM M, CURATES CR, EXHIBITION EX
 WHERE C.Cid = E.Cid 
-AND E.Mid = M.MID`;
+AND E.Mid = M.MID
+AND C.CID = CR.Cid
+AND EX.Eid = CR.Cid
+`;
   db.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
@@ -223,6 +234,37 @@ app.post("/curators/fire", (req, res) => {
   const data = req.body;
   const query = `DELETE FROM EMPLOYS 
   WHERE Cid = ${data.cid} AND Mid = ${data.mid};`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage);
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+// update curator
+app.post("/curators/update", (req, res) => {
+  const data = req.body;
+  const query = `UPDATE CURATES SET ${data.newEid} 
+  WHERE Cid = ${data.cid} AND Eid = ${data.eid};`;
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err.sqlMessage);
+      res.status(500).send("Error executing query: " + err.sqlMessage);
+      return;
+    }
+    console.log(results);
+    res.json(results);
+  });
+});
+
+app.post("/curators/new", (req, res) => {
+  const data = req.body;
+  const query = `INSERT INTO CURATOR (Cid, Name) 
+  VALUES (${data.cid}, '${data.name}');`;
   db.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err.sqlMessage);
