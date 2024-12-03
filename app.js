@@ -161,13 +161,126 @@ AND E.Name='${req.query.name}';`;
   });
 });
 
+app.post("/artwork/update", (req, res) => {
+  const { artwork_id, height, width, length, status, name, medium, material } =
+    req.body;
+
+  // Construct the query with dynamic SET fields
+  let setFields = [];
+  if (height !== "") setFields.push(`Height = ${db.escape(height)}`);
+  if (width !== "") setFields.push(`Width = ${db.escape(width)}`);
+  if (length !== "") setFields.push(`Length = ${db.escape(length)}`);
+  if (status !== "") setFields.push(`Status = ${db.escape(status)}`);
+  if (name !== "") setFields.push(`Name = ${db.escape(name)}`);
+  if (medium !== "") setFields.push(`Medium = ${db.escape(medium)}`);
+  if (material !== "") setFields.push(`Material = ${db.escape(material)}`);
+
+  if (setFields.length === 0) {
+    res.status(400).send("No fields provided to update");
+    return;
+  }
+
+  // Combine the fields into a single SET clause
+  const setClause = setFields.join(", ");
+
+  // Construct the final query
+  let query = `UPDATE ARTWORK SET ${setClause} WHERE Art_id = ${db.escape(
+    artwork_id
+  )};`;
+
+  console.log("Generated query:", query);
+
+  // Execute the query
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log("Query results:", results);
+    res.json({ message: "Artwork updated successfully", results });
+  });
+});
+
+app.post("/artist/update", (req, res) => {
+  const { artist_id, artist_name, date_of_death } = req.body;
+  console.log("body:", req.body);
+
+  if (!artist_id) {
+    return res.status(400).send("Artist ID is required");
+  }
+
+  let updateFields = [];
+  if (artist_name !== "") updateFields.push(`Name = ${db.escape(artist_name)}`);
+  if (date_of_death !== "")
+    updateFields.push(`Date_of_death = ${db.escape(date_of_death)}`);
+
+  if (updateFields.length === 0) {
+    return res.status(400).send("No fields provided to update");
+  }
+
+  const updateClause = updateFields.join(", ");
+  const query = `UPDATE ARTIST SET ${updateClause} WHERE Artist_id = ${db.escape(
+    artist_id
+  )};`;
+
+  console.log("Generated query:", query);
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log("Query results:", results);
+    res.json({ message: "Artist updated successfully", results });
+  });
+});
+
+// Update artist's medium and discipline
+app.post("/artist/medium-discipline/update", (req, res) => {
+  const { artist_id, artist_medium_discipline } = req.body;
+
+  if (!artist_id) {
+    return res.status(400).send("Artist ID is required");
+  }
+
+  let updateFields = [];
+  if (artist_medium !== undefined)
+    updateFields.push(
+      `Medium_discipline = ${db.escape(artist_medium_discipline)}`
+    );
+
+  if (updateFields.length === 0) {
+    return res.status(400).send("No fields provided to update");
+  }
+
+  const updateClause = updateFields.join(", ");
+  const query = `UPDATE ARTIST_MEDIUM_DISCIPLINE SET ${updateClause} WHERE Artist_id = ${db.escape(
+    artist_id
+  )};`;
+
+  console.log("Generated query:", query);
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      res.status(500).send("Error executing query");
+      return;
+    }
+    console.log("Query results:", results);
+    res.json({
+      message: "Artist medium and discipline updated successfully",
+      results,
+    });
+  });
+});
+
 // Update series
 app.post("/series/update", (req, res) => {
+  const data = req.body;
   let query = `DELETE FROM SERIES_HAS_ARTWORK
-WHERE Sid = ${req.body.series_id} AND Art_id = ${req.body.artwork_id};
-
-INSERT INTO SERIES_HAS_ARTWORK (Sid, Art_id)
-VALUES (${req.body.new_series_id}, ${req.body.artwork_id});`;
+WHERE Sid = ${data.series_id} AND Art_id = ${data.artwork_id};`;
   console.log(query);
   db.query(query, (err, results) => {
     if (err) {
@@ -175,8 +288,19 @@ VALUES (${req.body.new_series_id}, ${req.body.artwork_id});`;
       res.status(500).send("Error executing query");
       return;
     }
-    console.log(results);
-    res.json(results);
+
+    let insertQuery = `INSERT INTO SERIES_HAS_ARTWORK (Sid, Art_id)
+VALUES (${data.new_series_id}, ${data.artwork_id});`;
+    db.query(insertQuery, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).send("Error executing query");
+        return;
+      }
+
+      console.log(results);
+      res.json(results);
+    });
   });
 });
 
