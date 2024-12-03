@@ -7,12 +7,85 @@ export const ArtistPage = () => {
 
   const [artist_id, setArtistId] = useState("");
   const [artwork_id, setArtworkId] = useState("");
+
+  // Artwork details
+  const [height, setHeight] = useState("");
+  const [width, setWidth] = useState("");
+  const [length, setLength] = useState("");
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
+  const [medium, setMedium] = useState("");
+  const [material, setMaterial] = useState("");
+
+  // Artist details
+  const [artist_name, setArtistName] = useState("");
+  const [date_of_death, setDateOfDeath] = useState("");
+  const [artist_medium, setArtistMedium] = useState("");
+  const [discipline, setDiscipline] = useState("");
+
+  // Series details
   const [series_id, setSeriesId] = useState("");
   const [new_series_id, setNewSeriesId] = useState("");
 
   const [res, setRes] = useState([]);
   const handleClick = (e) => {
     setAction(e.target.value);
+  };
+
+  const updateArtwork = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put("http://localhost:4000/artwork/update", {
+        artwork_id,
+        height,
+        width,
+        length,
+        status,
+        name,
+        medium,
+        material,
+      });
+      console.log("Artwork update response:", response.data);
+      setRes(response.data);
+    } catch (error) {
+      console.error("Error making PUT request for artwork update:", error);
+    }
+  };
+
+  const updateArtist = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put("http://localhost:4000/artist/update", {
+        artist_id,
+        name,
+        date_of_death,
+      });
+      console.log("Artist update response:", response.data);
+      setRes(response.data);
+    } catch (error) {
+      console.error("Error making PUT request for artist update:", error);
+    }
+  };
+
+  const updateArtistMediumDiscipline = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        "http://localhost:4000/artist/medium-discipline/update",
+        {
+          artist_id,
+          medium,
+          discipline,
+        }
+      );
+      console.log("Artist Medium/Discipline update response:", response.data);
+      setRes(response.data);
+    } catch (error) {
+      console.error(
+        "Error making PUT request for artist medium/discipline update:",
+        error
+      );
+    }
   };
 
   const updateSeries = async (e) => {
@@ -76,26 +149,150 @@ export const ArtistPage = () => {
           Update Series
         </label>
       </form>
-      {/* {action === "Edit Artwork" && (
+      {action === "Edit Artist" && (
         <>
-          <label>
-            Enter new height:{" "}
-            <input
-              type="text"
-              value={eid}
-              onChange={(e) => setEid(e.target.value)}
-            />
-          </label>
-          <label>
-            Enter new width:{" "}
-            <input
-              type="text"
-              value={newEid}
-              onChange={(e) => setNewEid(e.target.value)}
-            />
-          </label>
+          <div>
+            <label>
+              Enter artist ID:{" "}
+              <input
+                type="text"
+                value={artist_id}
+                onChange={(e) => setArtistId(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter name:{" "}
+              <input
+                type="text"
+                value={artist_name}
+                onChange={(e) => setArtistName(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter date of death:{" "}
+              <input
+                type="text"
+                value={date_of_death}
+                onChange={(e) => setDateOfDeath(e.target.value)}
+              />
+            </label>
+          </div>
+          <button onClick={updateArtist}>Update Artist</button>
+
+          <div>
+            <label>
+              Enter medium:{" "}
+              <input
+                type="text"
+                value={artist_medium}
+                onChange={(e) => setArtistMedium(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter discipline:{" "}
+              <input
+                type="text"
+                value={discipline}
+                onChange={(e) => setDiscipline(e.target.value)}
+              />
+            </label>
+          </div>
+          <button onClick={updateArtistMediumDiscipline}>
+            Update Medium/Discipline
+          </button>
         </>
-      )} */}
+      )}
+      {action === "Edit Artwork" && (
+        <>
+          <div>
+            <label>
+              Enter artwork ID:{" "}
+              <input
+                type="text"
+                value={artwork_id}
+                onChange={(e) => setArtworkId(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter height:{" "}
+              <input
+                type="text"
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter width:{" "}
+              <input
+                type="text"
+                value={width}
+                onChange={(e) => setWidth(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter length:{" "}
+              <input
+                type="text"
+                value={length}
+                onChange={(e) => setLength(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter status:{" "}
+              <input
+                type="text"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter name:{" "}
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter medium:{" "}
+              <input
+                type="text"
+                value={medium}
+                onChange={(e) => setMedium(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Enter material:{" "}
+              <input
+                type="text"
+                value={material}
+                onChange={(e) => setMaterial(e.target.value)}
+              />
+            </label>
+          </div>
+          <button onClick={updateArtwork}>Update Artwork</button>
+        </>
+      )}
       {action === "Edit Series" && (
         <>
           <div>
